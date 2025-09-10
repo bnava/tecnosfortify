@@ -1,34 +1,21 @@
-Compile EightBall.java and run it.  It takes an integer as an argument:
+This sample includes simple C# programs that contain System Information Leak vulnerabilities. 
+To analyze these programs, you must have .NET SDK 8.0 and MSBuild 17.4 (or later) or Visual Studio 2022 installed.
 
-java EightBall 391
-java EightBall 2000
+This sample includes the following C# 12 features:
+ - Allow nameof access instance from static
+ - Collection expressions
+ - Inline arrays
+ - Lambda default parameters
+ - Primary constructors
+ - Ref readonly parameters
+ - Using aliases for any types
 
-Normally, this program replies with a message from the files 0, 1, or 2.  However,
-due to bad error handling, if you specify a filename instead of an integer as
-the argument, it shows the contents of the file.  (For simplicity, the
-user input comes from the command-line argument.  What would happen if it
-came from a web form?)  Try:
+Translate and scan the solution from the Developer Command Prompt with the following commands:
+  $ sourceanalyzer -b Sample -clean
+  $ sourceanalyzer -b Sample msbuild /t:restore /t:rebuild CSharp_12.sln
+  $ sourceanalyzer -b Sample -sc classic -scan Sample.fpr
 
-java EightBall /etc/passwd         (on Unix)
-java EightBall C:\autoexec.bat     (on Windows)
+Open the results (FPR file) in Audit Workbench.
 
-
-Run OpenText SAST (Fortify) to scan the code:
-
-$ sourceanalyzer -b EightBall -clean
-$ sourceanalyzer -b EightBall -source 1.8 EightBall.java
-$ sourceanalyzer -b EightBall -scan-policy classic -scan -f EightBall.fpr
-
-Open the results in Audit Workbench:
-
-$ auditworkbench EightBall.fpr
-
-The output should contain vulnerabilities in the following categories:
-
-      Path Manipulation
-
-The Fortify analysis might detect other issues depending on the Rulepack version 
-used in the scan.
-
-The Path Manipulation vulnerability indicates that the user can control
-the file opened by the FileReader. 
+In this sample, the System Information Leak indicates that sensitive data is written out to the console.
+The analysis results might include other issues depending on the version of the Rulepacks used in the scan.
