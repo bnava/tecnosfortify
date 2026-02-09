@@ -48,23 +48,7 @@ pipeline {
             }
         }
 
-        stage('Fortify Scan') {
-            steps {
-                fortifyScan(
-                    buildId: 'otlatamprueba',
-                    scanFile: 'prueba',
-                    maxHeap: '8000',
-                    projectScanType: otherScanType(
-                        includes: "${WORKSPACE}/**"
-                    ),
-                    uploadSSC: [
-                        appName: 'Gradle Prueba-GTO9',
-                        appVersion: 'v1'
-                    ],
-                    verbose: true
-                )
-            }
-        }
+       
     }
 
     post {
